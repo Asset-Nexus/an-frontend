@@ -1,25 +1,63 @@
-import logo from './logo.png';
-import './App.css';
+import React from 'react';
+import routes from './routes';
+import {
+    Routes,
+    Route,
+    NavLink,
+    Outlet,
+    Link,
+} from 'react-router-dom';
+import { 
+    Home,
+    AssetList,
+    LayoutPage
+} from './pages'
+// const items = [
 
-function App() {
+//   {
+//     key: 'sub2',
+//     label: 'Home',
+//   },
+//   {
+//     key: 'sub4',
+//     label: 'Sell Assets',
+//   },
+//   {
+//     key: 'grp',
+//     label:(<a href="https://ant.design" target="_blank" rel="noopener noreferrer">
+//         Connect Wallet
+//       </a>) 
+
+//   },
+// ];
+
+
+const App = () => {
+    return (
+    <>
+     
+      <Routes>
+        <Route path="/" element={<LayoutPage />}>
+          <Route index element={<Home />} />
+          <Route path="assetlist" element={<AssetList />} />
+
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </>
+  );
+};
+
+
+
+function NoMatch() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Asset Nexus
-        </p>
-        <a
-          className="App-link"
-          href="https://www.assetnexus.xyz"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Asset Nexus
-        </a>
-      </header>
+    <div>
+      <h1>Nothing to see here!</h1>
+      <p>
+        <NavLink to="/">Go to the home page</NavLink>
+      </p>
     </div>
   );
 }
-
 export default App;
