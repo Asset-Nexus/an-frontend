@@ -61,7 +61,7 @@ const LayoutPage = () => {
           textAlign: 'center',
         }}
       >
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
+        Asset Nexus ©{new Date().getFullYear()}
       </Footer>    
      </Layout> 
   )
