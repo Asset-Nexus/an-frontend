@@ -1,16 +1,14 @@
-import React from 'react'
 import { Button } from 'antd';
-
-
-import {  useConnect } from 'wagmi'
-
+import { useConnect, useAccount, useDisconnect } from 'wagmi'
 
 export default function ConnectWallet() {
   const { connectors, connect } = useConnect()
+  const { disconnect } = useDisconnect()
+  const { isConnected } = useAccount()
 
   return connectors.map((connector) => (
     <Button key={connector.uid} onClick={() => connect({ connector })}>
-      {connector.name}
+      {isConnected ? (<div onClick={() => disconnect()}>Disconnect</div>) : connector.name}
     </Button>
   ))
 }

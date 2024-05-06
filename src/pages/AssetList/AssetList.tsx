@@ -3,14 +3,16 @@ import { abi as marketAbi } from '../../abi/marketplace.abi';
 import { useReadContract } from 'wagmi';
 import { useAccount } from 'wagmi'
 
+const marketAddress = '0xF393253cDbfbd7c147A35928e874016c873Fb723'
+
 export default function AssetList() {
   const account = useAccount()
 
   const { isLoading, data } = useReadContract({
     abi: marketAbi,
-    address: '0x50E8B428cFe4daaBA8d1c3085d3Da9f901c8165f',
-    functionName: 'listing',
-    args: [account.address, BigInt(1)],
+    address: marketAddress,
+    functionName: 'getMyListing',
+    args: [account.address],
   })
 
   console.log(data)
