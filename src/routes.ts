@@ -3,6 +3,7 @@ import {
     AssetList,
 } from './pages'
 import Create from './pages/Create'
+import MyAssetList from './pages/MyAssetList'
 
 const routes = [{
     path: '/',
@@ -14,6 +15,12 @@ const routes = [{
     path: 'assetlist',
     component: AssetList,
     title: 'Asset List',
+    isNav: true,
+},
+{
+    path: 'myassets',
+    component: MyAssetList,
+    title: 'My Asset List',
     isNav: true,
 },
 {

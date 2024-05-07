@@ -7,20 +7,19 @@ const { Meta } = Card;
 interface MyComponentProps {
     product: {
       image: string;
-      name: string;
       price: number;
+      showBuy?: boolean;
     };
   }
 
-const ProductCard: React.FC<MyComponentProps> = ({ product }) => (
+const ProductCard: React.FC<MyComponentProps> = ({ product: { image, price, showBuy = false } }) => (
   <Card
     hoverable
     style={{ width: 240 }}
-    cover={<img alt={product.name} src={product.image} />}
+    cover={<img alt="" src={image} />}
   >
-    <Meta title={product.name} description={"$" + product.price} />
-    <p>ksdksdksdk</p>
-    <PayButton price={product.price}/>
+    <Meta  description={"$" + price} />
+    {showBuy && <PayButton price={price}/>}
   </Card>
 );
 

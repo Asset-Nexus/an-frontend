@@ -52,7 +52,7 @@ const LayoutPage = () => {
             padding: 24,
             borderRadius: borderRadiusLG,
           }}>
-                 <Layout> 
+                 <Layout style={{padding: 40}}> 
                 <Outlet />
                 </Layout> 
          </Content>

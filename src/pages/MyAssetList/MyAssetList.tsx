@@ -13,7 +13,7 @@ const marketAddress = '0xF393253cDbfbd7c147A35928e874016c873Fb723';
 const nftAddress = '0xeC8aCa83fa696c57e58218e0F38698787c217320'
 
 
-export default function AssetList() {
+export default function MyAssetList() {
   const account = useAccount();
   const { isLoading, data } = useReadContract({
     abi: marketAbi,
@@ -56,7 +56,7 @@ export default function AssetList() {
             product={{
               image: tokenUris[index],
               price: Number(formatEther(item.price)),
-              showBuy: true,
+              // showBuy: false,
             }}
           />
         ))
