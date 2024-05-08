@@ -6,7 +6,7 @@ export interface MintData {
     /**
      * 合约地址
      */
-    contractAddr?: string;
+    contractAddress?: string;
     /**
      * 描述
      */

@@ -51,7 +51,7 @@ function NFTUploadPage() {
       listForm.setFieldsValue({tokenId: String(tokenId)})
       const formValues = mintForm.getFieldsValue();
       formValues["id"] = String(tokenId);
-      formValues["contractAddr"] = nftAddress;
+      formValues["contractAddress"] = nftAddress;
       formValues["fromAddress"] = account.address;
       console.log("ajax send create nft", formValues)
       createNft(formValues)
