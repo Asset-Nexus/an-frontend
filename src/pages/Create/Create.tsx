@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Form, Typography, Flex } from 'antd';
+import { Button, Input, Form, Typography, Flex, message } from 'antd';
 import {
   type BaseError,
   useWaitForTransactionReceipt,
@@ -7,23 +7,20 @@ import {
   useAccount,
   useWatchContractEvent,
 } from 'wagmi'
-import {parseEther} from 'viem'
 
 import { abi as nftAbi } from '../../abi/nft.abi';
 import { abi as marketAbi } from '../../abi/marketplace.abi';
 import axios from 'axios';
-import { createNft } from '../../services/nft';
+import { approveNft, createNft } from '../../services/nft';
 import { MintData } from '../../types/mintData';
+import { ApproveData } from '../../types/approveData';
 
-const JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJkNTY3ZDRkOS1jOTIyLTQ1NjctOWFmYy05YTZlOWU1MGZhNGQiLCJlbWFpbCI6IjE1MDM4Njk1QHFxLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiNmNiZDQ3YmZmNjA0ODBkOGZhZCIsInNjb3BlZEtleVNlY3JldCI6ImU4MTdlOGRjNDRkNjRiODA0ZWU3MjhkZDc0Yjk3NzFjYTQwMWEzZjkxZDFmYjRhZWVmYjhmOGQ5NWZiMWMzOTciLCJpYXQiOjE3MTQ3MjIwNDB9.NYkGaOlyhO7fOsPF_1VfNU6J-heBVtwAjU0mHKNcoLM"
-
-const ifpsGateWay = "teal-cheap-mink-107.mypinata.cloud"
+const JWT = process.env.REACT_APP_IPFS_JWT
+const ifpsGateWay = process.env.REACT_APP_IPFS_GATEWAY
 const { useForm } = Form;
 
-// const nftAddress = process.env.NFTADDRESS as `0x${string}`
-const nftAddress = "0xeC8aCa83fa696c57e58218e0F38698787c217320"
-// const marketAddress = '0xF393253cDbfbd7c147A35928e874016c873Fb723'
-const marketAddress = "0x0Bb6B8F062D41B2A0aa4384705329bD60f7f618A"
+const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
+const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
 interface ListFormData {
   tokenId: string;
   price: string;
@@ -49,22 +46,33 @@ function NFTUploadPage() {
     abi: nftAbi,
     eventName: 'NewNFTMinted',
     onLogs(logs) {
-      console.log('New logs!', logs)
+      console.log('nft mint logs!', logs)
       const tokenId = logs[0].args.tokenId
       listForm.setFieldsValue({tokenId: String(tokenId)})
       const formValues = mintForm.getFieldsValue();
       formValues["id"] = String(tokenId);
       formValues["contractAddr"] = nftAddress;
       formValues["fromAddress"] = account.address;
-      //hardcode
-      formValues["price"] = 0;
-      formValues["tag"] = "aa";
       console.log("ajax send create nft", formValues)
       createNft(formValues)
     },
   })
-
-  console.log(process.env)
+  useWatchContractEvent({
+    address: nftAddress,
+    abi: nftAbi,
+    eventName: 'Approval',
+    onLogs(logs) {
+      console.log('approve logs!', logs)
+      const args = logs[0].args
+      const data: ApproveData = {
+        to_address: args.approved, 
+        from_address: args.owner, 
+        id: String(args.tokenId)
+      }
+      console.log("ajax send approve nft", data)
+      approveNft(data);
+    },
+  })
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
@@ -100,7 +108,6 @@ function NFTUploadPage() {
           'Authorization': `Bearer ${JWT}`
         }
       });
-      console.log(res.data);
       setImage(`https://${ifpsGateWay}/ipfs/${res.data.IpfsHash}`)
       mintForm.setFieldsValue({ fileUrl: `https://${ifpsGateWay}/ipfs/${res.data.IpfsHash}` });
     } catch (error) {
@@ -110,10 +117,9 @@ function NFTUploadPage() {
     }
   }
 
-
   const submitMint = async (formData: MintData) => {
     if (!account.isConnected) {
-      alert("please connect wallet first!")
+      message.error("please connect wallet first!")
       return
     }
     writeContract({
@@ -125,19 +131,19 @@ function NFTUploadPage() {
   };
   const submitListing = async (formData: ListFormData) => {
     if (!account.isConnected) {
-      alert("please connect wallet first!")
+      message.error("please connect wallet first!")
       return
     }
     writeContract({
       address: marketAddress,
       abi: marketAbi,
       functionName: 'listItem',
-      args: [nftAddress, BigInt(formData.tokenId), parseEther(formData.price)],
+      args: [nftAddress, BigInt(formData.tokenId), BigInt(formData.price)],
     })
   };
   const submitApprove = async () => {
     if (!account.isConnected) {
-      alert("please connect wallet first!")
+      message.error("please connect wallet first!")
       return
     }
     writeContract({
@@ -194,7 +200,12 @@ function NFTUploadPage() {
         <Form.Item
           label="Description"
           name="desc"
-          rules={[{ required: true, message: 'Please input author' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Tag"
+          name="tag"
         >
           <Input />
         </Form.Item>

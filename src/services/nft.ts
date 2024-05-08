@@ -1,9 +1,16 @@
 import axios from "axios";
 import { MintData } from "../types/mintData";
-const baseUrl = "http://47.92.54.241:6066";
 
+const session = axios.create({
+    baseURL: process.env.REACT_APP_BACKEND_ENDPOINT
+})
 
 export const createNft = (data: MintData) => {
-    const url = `${baseUrl}/nft/create`
-    return axios.post(url, data)
+    const url = `/nft/create`
+    return session.post(url, data)
+}
+
+export const approveNft = (data) => {
+    const url = `/nft/authorize`
+    return session.post(url, data)
 }

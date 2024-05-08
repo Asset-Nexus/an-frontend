@@ -8,18 +8,18 @@ interface MyComponentProps {
     product: {
       image: string;
       price: number;
+      tokenId: number;
       showBuy?: boolean;
     };
   }
 
-const ProductCard: React.FC<MyComponentProps> = ({ product: { image, price, showBuy = false } }) => (
+const ProductCard: React.FC<MyComponentProps> = ({ product: { image, price, tokenId, showBuy = false } }) => (
   <Card
     hoverable
-    style={{ width: 240 }}
-    cover={<img alt="" src={image} />}
+    cover={<img alt="" src={image} style={{aspectRatio: 16 / 9, objectFit: "contain"}} />}
   >
     <Meta  description={"$" + price} />
-    {showBuy && <PayButton price={price}/>}
+    {showBuy && <PayButton tokenId={tokenId}/>}
   </Card>
 );
 

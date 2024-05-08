@@ -3,24 +3,24 @@ import ProductCard from '../../components/ProductCard';
 import { abi as marketAbi } from '../../abi/marketplace.abi';
 import { abi as nftAbi } from '../../abi/nft.abi';
 import { useReadContract } from 'wagmi';
-import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { readContract } from '@wagmi/core'
 import { config } from '../../config';
+import { List, Pagination } from 'antd';
 
-
-const marketAddress = '0xF393253cDbfbd7c147A35928e874016c873Fb723';
-const nftAddress = '0xeC8aCa83fa696c57e58218e0F38698787c217320'
-
+const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
+const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
+const pageSize = 20;
 
 export default function AssetList() {
-  const account = useAccount();
-  const { isLoading, data } = useReadContract({
+  const {  data } = useReadContract({
     abi: marketAbi,
     address: marketAddress,
-    functionName: 'getMyListing',
-    args: [account.address],
+    functionName: 'getAllListing',
   });
+
+  const [page, setPage] = useState(1);
+  const [currentPageData, setCurrentPageData] = useState([]);
 
   const [tokenUris, setTokenUris] = useState([]);
 
@@ -42,25 +42,36 @@ export default function AssetList() {
 
     if (data && data.length > 0) {
       fetchTokenUris();
+      setCurrentPageData(data.slice((page-1)* pageSize, page* pageSize))
     }
-  }, [data]);
+  }, [data, page]);
+
+  const onPagination = async (e) => {
+    setPage(e)
+  }
+
+  
 
   return (
     <>
-      {isLoading ? (
-        'Loading'
-      ) : (
-        data.map((item, index) => (
-          <ProductCard
-            key={item.tokenId}
-            product={{
-              image: tokenUris[index],
-              price: Number(formatEther(item.price)),
-              showBuy: true,
-            }}
-          />
-        ))
-      )}
-    </>
+      <List
+          grid={{ gutter: 16, column: 5 }}
+          dataSource={[...currentPageData]}
+          renderItem={(item, index) => (
+            <List.Item>
+              <ProductCard
+                product={{
+                  image: tokenUris[index],
+                  price: Number(formatEther(item.price)),
+                  tokenId: Number(item.tokenId),
+                  showBuy: true,
+                }}
+              />
+            </List.Item>
+          )} 
+        />
+        <Pagination onChange={onPagination} total={data?.length || 0} pageSize={pageSize} current={page} />
+        </>
   );
 }
+

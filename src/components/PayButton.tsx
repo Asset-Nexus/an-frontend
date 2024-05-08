@@ -1,57 +1,62 @@
-import { useConnect, useAccount, useWriteContract } from 'wagmi'
-import { injected } from 'wagmi/connectors'
-import { useState } from 'react';
-import { bscTestnet } from 'wagmi/chains';
-import { Button } from 'antd';
+import { useConnect, useAccount, useWriteContract, useConfig } from 'wagmi'
+import { Button,notification } from 'antd';
+import { abi } from '../abi/marketplace.abi';
+import { useEffect } from 'react';
 
+const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
+const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
 
-export const PayButton = ({ price }: { price: number }) => {
-  const { connectAsync } = useConnect()
+export const PayButton = ({ tokenId }: { tokenId: number }) => {
+
+  const { connectors, connectAsync } = useConnect()
   const { address } = useAccount()
-  const { writeContractAsync } = useWriteContract()
-  const [started, setStarted] = useState(false)
-  const [errors, setErrors] = useState("")
-  const [completed, setCompleted] = useState(false)
-
+  const { data, error, isPending, isSuccess, writeContract } = useWriteContract()
+  const config = useConfig()
   const handlePayment = async () => {
-    try {
-      setErrors('')
-      setStarted(true)
-      if(!address) {
-        await connectAsync({ chainId: bscTestnet.id, connector: injected()})
-      }
 
-      const data = await writeContractAsync({
-        chainId: bscTestnet.id,
-        address: '0x50E8B428cFe4daaBA8d1c3085d3Da9f901c8165f', // change to receipient address
-        functionName: 'transfer',
-        abi: [{ "inputs": [ { "internalType": "address", "name": "recipient", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "transfer", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }],
-        args: [
-          '0x64498163f2b3E5AA871d335F4CBA6d5b5DcdD6BA',
-          price * 1000000,
-        ],
-      })
-      setCompleted(true)
-      console.log(data)
-    } catch(err) {
-      console.log(err)
-      setStarted(false)
-      setErrors("Payment failed. Please try again.")
+    if(!address) {
+      let connector = connectors.find((i) => i.type === "injected")
+      connector = connector || connectors[0]
+      console.log(connector)
+      await connectAsync({ chainId: config.chains[0].id, connector: connector})
     }
+    writeContract({
+      address: marketAddress,
+      functionName: 'buyItem',
+      abi: abi,
+      args: [
+        nftAddress,
+        tokenId,
+      ],
+    })
   }
+
+  useEffect(() => {
+    if (error) {
+      notification.error({
+        message: error.name,
+        description: error.message,
+      });
+    }
+    if (isSuccess) {
+      notification.success({
+        message: 'success',
+        description: 'Thank you for your payment.',
+      });
+    }
+  }, [error, isSuccess]);
 
   return (
     <>
-      {!completed && (
+      {!isSuccess && (
         <Button 
-          disabled={started}
+          disabled={isPending}
           onClick={handlePayment}
         >
-          {started ? "Confirming..." : "Pay Now"}
+          {isPending && !isSuccess ? "Confirming..." : "Pay Now"}
         </Button>
       )}
-      {completed && <p>Thank you for your payment.</p>}
-      {errors && <p>{errors}</p>}
+      {data && <div>Transaction Hash: {data}</div>}
     </>
   )
 }

@@ -24,10 +24,6 @@ export interface MintData {
      */
     id?: string;
     /**
-     * 价格
-     */
-    price?: number;
-    /**
      * 标签
      */
     tag?: string;
@@ -36,3 +32,4 @@ export interface MintData {
      */
     title: string;
 }
+
