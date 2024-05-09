@@ -47,12 +47,11 @@ const LayoutPage = () => {
         <ConnectWallet />        
         </Header>
             <Content style={{
-            background: colorBgContainer,
+            background: "#2B2B2B",
             minHeight: 280,
             padding: 24,
-            borderRadius: borderRadiusLG,
           }}>
-                 <Layout style={{padding: 40}}> 
+                 <Layout style={{background: "#2B2B2B"}}> 
                 <Outlet />
                 </Layout> 
          </Content>

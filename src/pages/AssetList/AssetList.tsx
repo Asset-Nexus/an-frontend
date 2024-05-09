@@ -62,7 +62,7 @@ export default function AssetList() {
               <ProductCard
                 product={{
                   image: tokenUris[index],
-                  price: Number(formatEther(item.price)),
+                  price: formatEther(item.price),
                   tokenId: Number(item.tokenId),
                   showBuy: true,
                 }}

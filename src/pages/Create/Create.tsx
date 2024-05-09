@@ -14,6 +14,8 @@ import axios from 'axios';
 import { approveNft, createNft } from '../../services/nft';
 import { MintData } from '../../types/mintData';
 import { ApproveData } from '../../types/approveData';
+import { IssueData } from '../../types/issueData';
+import { issueNft } from '../../services/market';
 
 const JWT = process.env.REACT_APP_IPFS_JWT
 const ifpsGateWay = process.env.REACT_APP_IPFS_GATEWAY
@@ -48,7 +50,7 @@ function NFTUploadPage() {
     onLogs(logs) {
       console.log('nft mint logs!', logs)
       const tokenId = logs[0].args.tokenId
-      listForm.setFieldsValue({tokenId: String(tokenId)})
+      listForm.setFieldsValue({ tokenId: String(tokenId) })
       const formValues = mintForm.getFieldsValue();
       formValues["id"] = String(tokenId);
       formValues["contractAddress"] = nftAddress;
@@ -65,12 +67,27 @@ function NFTUploadPage() {
       console.log('approve logs!', logs)
       const args = logs[0].args
       const data: ApproveData = {
-        to_address: args.approved, 
-        from_address: args.owner, 
+        toAddress: args.approved,
+        fromAddress: args.owner,
         id: String(args.tokenId)
       }
       console.log("ajax send approve nft", data)
       approveNft(data);
+    },
+  })
+  useWatchContractEvent({
+    address: marketAddress,
+    abi: marketAbi,
+    eventName: 'ItemListed',
+    onLogs(logs) {
+      console.log('approve logs!', logs)
+      const args = logs[0].args
+      const data: IssueData = {
+        price: Number(listForm.getFieldValue("price")),
+        id: String(args.tokenId)
+      }
+      console.log("ajax send issue nft", data)
+      issueNft(data);
     },
   })
 
@@ -160,21 +177,23 @@ function NFTUploadPage() {
 
   return (
     <>
-      <Typography.Title level={2}>NFT Listing</Typography.Title>
-      <Typography.Title level={5}>step 1. upload to ipfs</Typography.Title>
-      {image && <img src={image} alt='' width={200} />}
-      <input type="file" accept=".jpg,.png" onChange={handleFileChange} />
-      <Flex gap="small">
-      <Button
-        type='primary'
-        disabled={isDisable() || !file}
-        onClick={pinFileToIPFS}
-      >
-        {'Upload'}
-      </Button>
-      </Flex>
+      <section style={{ background: "#e9e9e9", padding: 20 }}>
+        <Typography.Title level={2}>NFT Listing</Typography.Title>
+        <Typography.Title level={5}>step 1. upload to ipfs</Typography.Title>
+        {image && <img src={image} alt='' width={200} />}
+        <input type="file" accept=".jpg,.png" onChange={handleFileChange} />
+        <Flex gap="small">
+          <Button
+            type='primary'
+            disabled={isDisable() || !file}
+            onClick={pinFileToIPFS}
+          >
+            {'Upload'}
+          </Button>
+        </Flex>
+      </section>
 
-      <Form onFinish={submitMint} form={mintForm}>
+      <Form onFinish={submitMint} form={mintForm} style={{ background: "#e9e9e9", padding: 20 }}>
         <Typography.Title level={5}>step 2. mint nft</Typography.Title>
         <Form.Item
           label="Token uri"
@@ -219,7 +238,7 @@ function NFTUploadPage() {
           {isDisable() ? 'Confirming...' : 'Mint'}
         </Button>
       </Form>
-      <Form onFinish={submitListing} form={listForm}>
+      <Form onFinish={submitListing} form={listForm} style={{ background: "#e9e9e9", padding: 20 }}>
         <Typography.Title level={5}>final step.</Typography.Title>
         <Form.Item
           label="Token ID"
@@ -241,7 +260,7 @@ function NFTUploadPage() {
           type='primary'
           onClick={submitApprove}
           disabled={isDisable()}
-          style={{marginRight: 20}}
+          style={{ marginRight: 20 }}
         >
           {isDisable() ? 'Confirming...' : 'Approve to marketplace'}
         </Button>
@@ -253,14 +272,16 @@ function NFTUploadPage() {
           {isDisable() ? 'Confirming...' : 'List in marketplace'}
         </Button>
       </Form>
-      <Typography.Title level={5}>message: </Typography.Title>
-      
-      {hash && <div>Transaction Hash: {hash}</div>}
-      {isConfirming && <div>Waiting for confirmation...</div>}
-      {isConfirmed && <div>Transaction confirmed.</div>}
-      {error && (
-        <div>Error: {(error as BaseError).shortMessage || error.message}</div>
-      )}
+      <div style={{ background: "#e9e9e9", padding: 20 }}>
+        <Typography.Title level={5}>message: </Typography.Title>
+
+        {hash && <div>Transaction Hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
+        {error && (
+          <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+        )}
+      </div>
     </>
 
   );

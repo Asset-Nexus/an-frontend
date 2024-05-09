@@ -3,7 +3,7 @@ export interface ApproveData {
     /**
      * 授权方地址
      */
-    from_address: string;
+    fromAddress: string;
     /**
      * NFT id值
      */
@@ -15,6 +15,6 @@ export interface ApproveData {
     /**
      * 被授权方地址
      */
-    to_address: string;
+    toAddress: string;
     [property: string]: any;
 }
