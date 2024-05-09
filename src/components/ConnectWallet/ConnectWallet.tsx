@@ -6,7 +6,7 @@ export default function ConnectWallet() {
   const { disconnect } = useDisconnect()
   const { isConnected } = useAccount()
   return connectors.map((connector) => (
-    <Button key={connector.uid} onClick={() => connect({ connector })}>
+    <Button type="primary" key={connector.uid} onClick={() => connect({ connector })}>
       {isConnected ? (<div onClick={() => disconnect()}>Disconnect</div>) : connector.name}
     </Button>
   ))

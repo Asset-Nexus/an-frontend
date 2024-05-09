@@ -18,25 +18,43 @@ import { WagmiProvider } from 'wagmi'
 import { config } from './config'
 import Create from './pages/Create';
 import MyAssetList from './pages/MyAssetList';
+import Register from './pages/Register';
+import { ConfigProvider } from 'antd';
+
 
 const queryClient = new QueryClient()
 
 function App() {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path="/" element={<LayoutPage />}>
-            <Route index element={<Home />} />
-            <Route path="assetlist" element={<AssetList />} />
-            <Route path="myassets" element={<MyAssetList />} />
-            <Route path="mint" element={<Create />} />
+    <ConfigProvider
+      theme={{
+        token: {
+          // Seed Token
+          colorTextBase: "white",
+          colorPrimary: '#FF5733',
+          borderRadius: 4,
 
-            <Route path="*" element={<NoMatch />} />
-          </Route>
-        </Routes>
-      </QueryClientProvider>
-    </WagmiProvider>
+          // Alias Token
+          colorBgContainer: '#f6ffed',
+        },
+      }}
+    >
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <Routes>
+            <Route path="/" element={<LayoutPage />}>
+              <Route index element={<Home />} />
+              <Route path="assetlist" element={<AssetList />} />
+              <Route path="myassets" element={<MyAssetList />} />
+              <Route path="mint" element={<Create />} />
+              <Route path="register" element={<Register />} />
+
+              <Route path="*" element={<NoMatch />} />
+            </Route>
+          </Routes>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ConfigProvider>
   )
 }
 

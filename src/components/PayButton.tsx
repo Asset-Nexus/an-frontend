@@ -3,11 +3,17 @@ import { Button,notification } from 'antd';
 import { abi as marketAbi} from '../abi/marketplace.abi';
 import { abi as tokenAbi} from '../abi/token.abi';
 import { parseEther } from 'viem';
+import styled from 'styled-components';
 
 const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
 const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
 const tokenAddress = process.env.REACT_APP_TOKEN_ADDRESS as `0x${string}`
 
+const StyledButton = styled(Button)`
+ margin: 11px;
+ border-radius: 0.8em;
+ border: none;
+`
 export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [property: string]: any }) => {
 
   const { connectors, connectAsync } = useConnect()
@@ -55,13 +61,13 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
   return (
     <>
       {!isSuccess && (
-        <Button 
+        <StyledButton 
+          type="primary"
           disabled={isPending}
           onClick={handlePayment}
-          style={{background: "#FF5733", color: "white"}}
         >
           {isPending && !isSuccess ? "Confirming..." : "Buy"}
-        </Button>
+        </StyledButton>
       )}
       {data && <div>Transaction Hash: {data}</div>}
     </>

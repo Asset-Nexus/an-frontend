@@ -1,12 +1,6 @@
 import React from 'react';
 import { PayButton } from './PayButton';
 import { Card } from 'antd';
-import styled from 'styled-components';
-
-const Button = styled(PayButton)`
-  color: hotpink;
-  margin: 20px;
-`
 
 const { Meta } = Card;
 
@@ -28,7 +22,7 @@ const ProductCard: React.FC<MyComponentProps> = ({ product: { image, price, toke
   >
     <Meta description={<span style={{color: "white"}}>{"$" + price}</span>} />
 
-    {showBuy && <Button price={price} tokenId={tokenId} />}
+    {showBuy && <PayButton price={price} tokenId={tokenId} />}
   </Card>
 );
 

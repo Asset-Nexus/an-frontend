@@ -28,6 +28,19 @@ interface ListFormData {
   price: string;
 }
 
+const contentBG = "#111";
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 2 },
+    sm: { span: 2 },
+  },
+  // wrapperCol: {
+  //   xs: { span: 23 },
+  //   sm: { span: 23 },
+  // },
+};
+
+
 function NFTUploadPage() {
   const [image, setImage] = useState('');
   const [file, setFile] = useState<File>();
@@ -177,7 +190,7 @@ function NFTUploadPage() {
 
   return (
     <>
-      <section style={{ background: "#e9e9e9", padding: 20 }}>
+      <section style={{ background: contentBG, padding: 20 }}>
         <Typography.Title level={2}>NFT Listing</Typography.Title>
         <Typography.Title level={5}>step 1. upload to ipfs</Typography.Title>
         {image && <img src={image} alt='' width={200} />}
@@ -193,7 +206,7 @@ function NFTUploadPage() {
         </Flex>
       </section>
 
-      <Form onFinish={submitMint} form={mintForm} style={{ background: "#e9e9e9", padding: 20 }}>
+      <Form onFinish={submitMint} form={mintForm} style={{ background: contentBG, padding: 20 }} {...formItemLayout}>
         <Typography.Title level={5}>step 2. mint nft</Typography.Title>
         <Form.Item
           label="Token uri"
@@ -207,7 +220,7 @@ function NFTUploadPage() {
           name="title"
           rules={[{ required: true, message: 'Please input title' }]}
         >
-          <Input />
+          <Input maxLength={10} />
         </Form.Item>
         <Form.Item
           label="Author"
@@ -238,7 +251,7 @@ function NFTUploadPage() {
           {isDisable() ? 'Confirming...' : 'Mint'}
         </Button>
       </Form>
-      <Form onFinish={submitListing} form={listForm} style={{ background: "#e9e9e9", padding: 20 }}>
+      <Form onFinish={submitListing} form={listForm} style={{ background: contentBG, padding: 20 }} {...formItemLayout}>
         <Typography.Title level={5}>final step.</Typography.Title>
         <Form.Item
           label="Token ID"
@@ -272,7 +285,7 @@ function NFTUploadPage() {
           {isDisable() ? 'Confirming...' : 'List in marketplace'}
         </Button>
       </Form>
-      <div style={{ background: "#e9e9e9", padding: 20 }}>
+      <div style={{ background: contentBG, padding: 20 }}>
         <Typography.Title level={5}>message: </Typography.Title>
 
         {hash && <div>Transaction Hash: {hash}</div>}
