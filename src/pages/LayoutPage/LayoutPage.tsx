@@ -1,16 +1,12 @@
 import React from 'react'
-import { Layout, Menu,theme} from 'antd';
+import { Layout, Menu } from 'antd';
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { ConnectWallet } from '../../components';
 import routes from '../../routes';
 const { Header, Content, Footer } = Layout;
 
-
 const LayoutPage = () => {
-      const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
     return (  
         <Layout>
             <Header

@@ -3,8 +3,6 @@ import {
   Routes,
   Route,
   NavLink,
-  Outlet,
-  Link,
 } from 'react-router-dom';
 import {
   Home,
