@@ -3,7 +3,7 @@ import { Button,notification } from 'antd';
 import { abi as marketAbi} from '../abi/marketplace.abi';
 import { abi as tokenAbi} from '../abi/token.abi';
 import { parseEther } from 'viem';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
 const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`

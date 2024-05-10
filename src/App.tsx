@@ -33,7 +33,8 @@ function App() {
           borderRadius: 4,
 
           // Alias Token
-          colorBgContainer: '#f6ffed',
+          colorBgContainer: '#1C1C1C',
+          lineWidth: 0,
         },
       }}
     >

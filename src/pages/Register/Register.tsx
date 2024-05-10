@@ -1,5 +1,5 @@
 import { Form, Input, Button } from 'antd';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { apiRegister } from '../../services/register';
 
 const Title = styled.h2`

@@ -15,9 +15,9 @@ interface MyComponentProps {
 
 const ProductCard: React.FC<MyComponentProps> = ({ product: { image, price, tokenId, showBuy = false } }) => (
   <Card
-    // hoverable
+    hoverable
     cover={<img alt="" src={image} style={{aspectRatio: 16 / 9, objectFit: "cover"}} />}
-    style={{borderRadius: 8, background: "#1C1C1C", color: "#FFFFFF"}}
+    style={{borderRadius: "2em", background: "#1C1C1C", color: "#FFFFFF"}}
     bordered={false}
   >
     <Meta description={<span style={{color: "white"}}>{"$" + price}</span>} />

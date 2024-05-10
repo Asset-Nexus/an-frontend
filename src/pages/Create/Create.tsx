@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Form, Typography, Flex, message } from 'antd';
+import { Button, Input, Form, Typography, Flex, message, Space } from 'antd';
 import {
   type BaseError,
   useWaitForTransactionReceipt,
@@ -16,6 +16,8 @@ import { MintData } from '../../types/mintData';
 import { ApproveData } from '../../types/approveData';
 import { IssueData } from '../../types/issueData';
 import { issueNft } from '../../services/market';
+import styled from '@emotion/styled';
+import { Content } from 'antd/es/layout/layout';
 
 const JWT = process.env.REACT_APP_IPFS_JWT
 const ifpsGateWay = process.env.REACT_APP_IPFS_GATEWAY
@@ -23,21 +25,38 @@ const { useForm } = Form;
 
 const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
 const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
+
+const Title = styled(Typography.Title)`
+font-family: MuseoModerno;
+font-size: 32px;
+font-weight: 700;
+line-height: 40px;
+letter-spacing: -0.40799999237060547px;
+text-align: center;
+`
+
+const MyForm = styled(Form)`
+   padding: 2em 4em;
+   border: 2px solid #FF5733;
+   border-radius: 1em;
+   margin: 1em;
+`
+const MySection = styled.section`
+   padding: 2em 4em;
+   border: 2px solid #FF5733;
+   border-radius: 1em;
+   margin: 1em;
+`
 interface ListFormData {
   tokenId: string;
   price: string;
 }
 
-const contentBG = "#111";
 const formItemLayout = {
   labelCol: {
     xs: { span: 2 },
     sm: { span: 2 },
   },
-  // wrapperCol: {
-  //   xs: { span: 23 },
-  //   sm: { span: 23 },
-  // },
 };
 
 
@@ -189,10 +208,12 @@ function NFTUploadPage() {
   }
 
   return (
-    <>
-      <section style={{ background: contentBG, padding: 20 }}>
-        <Typography.Title level={2}>NFT Listing</Typography.Title>
+    <Content style={{ padding: 48 }}>
+      <Title>NFT Listing</Title>
+      <MySection>
+        
         <Typography.Title level={5}>step 1. upload to ipfs</Typography.Title>
+        <Space direction="vertical">
         {image && <img src={image} alt='' width={200} />}
         <input type="file" accept=".jpg,.png" onChange={handleFileChange} />
         <Flex gap="small">
@@ -204,9 +225,10 @@ function NFTUploadPage() {
             {'Upload'}
           </Button>
         </Flex>
-      </section>
+        </Space>
+      </MySection>
 
-      <Form onFinish={submitMint} form={mintForm} style={{ background: contentBG, padding: 20 }} {...formItemLayout}>
+      <MyForm onFinish={submitMint} form={mintForm} {...formItemLayout}>
         <Typography.Title level={5}>step 2. mint nft</Typography.Title>
         <Form.Item
           label="Token uri"
@@ -250,8 +272,8 @@ function NFTUploadPage() {
         >
           {isDisable() ? 'Confirming...' : 'Mint'}
         </Button>
-      </Form>
-      <Form onFinish={submitListing} form={listForm} style={{ background: contentBG, padding: 20 }} {...formItemLayout}>
+      </MyForm>
+      <MyForm onFinish={submitListing} form={listForm} {...formItemLayout}>
         <Typography.Title level={5}>final step.</Typography.Title>
         <Form.Item
           label="Token ID"
@@ -284,8 +306,8 @@ function NFTUploadPage() {
         >
           {isDisable() ? 'Confirming...' : 'List in marketplace'}
         </Button>
-      </Form>
-      <div style={{ background: contentBG, padding: 20 }}>
+      </MyForm>
+      <div style={{padding: 20 }}>
         <Typography.Title level={5}>message: </Typography.Title>
 
         {hash && <div>Transaction Hash: {hash}</div>}
@@ -295,7 +317,7 @@ function NFTUploadPage() {
           <div>Error: {(error as BaseError).shortMessage || error.message}</div>
         )}
       </div>
-    </>
+    </Content>
 
   );
 }

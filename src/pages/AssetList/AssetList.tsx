@@ -1,19 +1,29 @@
 import { useEffect, useState } from 'react';
-import ProductCard from '../../components/ProductCard';
 import { abi as marketAbi } from '../../abi/marketplace.abi';
 import { abi as nftAbi } from '../../abi/nft.abi';
 import { useReadContract } from 'wagmi';
-import { formatEther } from 'viem';
 import { readContract } from '@wagmi/core'
 import { config } from '../../config';
-import { List, Pagination } from 'antd';
+import { Pagination, Typography } from 'antd';
+import { Content } from 'antd/es/layout/layout';
+import MyList from '../../components/MyList/MyList';
+import styled from '@emotion/styled';
 
 const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
 const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
 const pageSize = 20;
 
-export default function AssetList() {
-  const {  data } = useReadContract({
+const Title = styled(Typography.Title)`
+font-family: MuseoModerno;
+font-size: 32px;
+font-weight: 700;
+line-height: 40px;
+letter-spacing: -0.40799999237060547px;
+text-align: center;
+`
+
+export function AssetList() {
+  const { data } = useReadContract({
     abi: marketAbi,
     address: marketAddress,
     functionName: 'getAllListing',
@@ -42,7 +52,7 @@ export default function AssetList() {
 
     if (data && data.length > 0) {
       fetchTokenUris();
-      setCurrentPageData(data.slice((page-1)* pageSize, page* pageSize))
+      setCurrentPageData(data.slice((page - 1) * pageSize, page * pageSize))
     }
   }, [data, page]);
 
@@ -50,28 +60,21 @@ export default function AssetList() {
     setPage(e)
   }
 
-  
 
   return (
     <>
-      <List
-          grid={{ gutter: 16, column: 5 }}
-          dataSource={[...currentPageData]}
-          renderItem={(item, index) => (
-            <List.Item>
-              <ProductCard
-                product={{
-                  image: tokenUris[index],
-                  price: formatEther(item.price),
-                  tokenId: Number(item.tokenId),
-                  showBuy: true,
-                }}
-              />
-            </List.Item>
-          )} 
-        />
-        <Pagination onChange={onPagination} total={data?.length || 0} pageSize={pageSize} current={page} />
-        </>
+      <MyList currentPageData={currentPageData} tokenUris={tokenUris}></MyList>
+      {!!data?.length && <Pagination onChange={onPagination} total={data?.length || 0} pageSize={pageSize} current={page} />}
+    </>
   );
 }
 
+
+export default function AssetListPage() {
+  return (
+    <Content style={{ padding: 48 }}>
+      <Title>All Nft in Marketplace</Title>
+      <AssetList />
+    </Content>
+  );
+}
