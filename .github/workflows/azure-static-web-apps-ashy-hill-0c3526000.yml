@@ -19,9 +19,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - name: Decode secret variable and write to file
         run: |
           echo ${{ secrets.DEV_ENV }} | base64 -d > .env
