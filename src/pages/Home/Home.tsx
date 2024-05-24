@@ -1,5 +1,4 @@
 import { Carousel, Typography } from 'antd';
-import React from 'react';
 import image1 from '../../assets/images/original-83c2fbf9b52c2351fcd42796f89e3193.png'
 import image2 from '../../assets/images/61af2e2868298004e89171da_Community-Icon.png'
 import { AssetList } from '../AssetList';
