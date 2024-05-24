@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Layout, Menu, Drawer, Button } from 'antd';
 import { NavLink, Outlet } from 'react-router-dom';
 import { ConnectWallet } from '../../components';

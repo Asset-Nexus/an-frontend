@@ -4,6 +4,8 @@ import { abi as marketAbi} from '../abi/marketplace.abi';
 import { abi as tokenAbi} from '../abi/token.abi';
 import { parseEther } from 'viem';
 import styled from '@emotion/styled';
+import { buyNft } from '../services/nft';
+import { buyData } from '../types/buyData';
 
 const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
 const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
@@ -25,7 +27,6 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
     if(!address) {
       let connector = connectors.find((i) => i.type === "injected")
       connector = connector || connectors[0]
-      console.log(connector)
       await connectAsync({ chainId: config.chains[0].id, connector: connector})
     }
     try {
@@ -46,10 +47,15 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
       })
       notification.success({
         message: 'success',
-        description: 'Thank you for your payment.',
+        description: `Thank you for your payment. Transaction Hash: ${data}`,
       })
+      const buyData: buyData = {
+        buyerAddress: address,
+        nftAddress: nftAddress,
+        tokenId: tokenId,
+      }
+      buyNft(buyData)
     }catch (e) {
-      // console.log(e)
       notification.error({
         message: e.name,
         description: e.message,
@@ -69,7 +75,6 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
           {isPending && !isSuccess ? "Confirming..." : "Buy"}
         </StyledButton>
       )}
-      {data && <div>Transaction Hash: {data}</div>}
     </>
   )
 }

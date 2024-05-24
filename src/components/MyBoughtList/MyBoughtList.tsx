@@ -1,9 +1,7 @@
-import ProductCard from '../../components/ProductCard';
-import { formatEther } from 'viem';
+import ProductCard from '../ProductCard';
 import { List } from 'antd';
 
-export default function MyList({ currentPageData }) {
-
+export default function MyBoughtList({ currentPageData }) {
   return (
     <List
       grid={{
@@ -19,11 +17,13 @@ export default function MyList({ currentPageData }) {
           <ProductCard
             product={{
               image: item.fileUrl,
+              author: item.author,
               title: item.title,
+              description: item.description,
               tag: item.tag,
-              price: formatEther(item.price),
+              tradeTime: item.tradeTime,
               tokenId: Number(item.tokenId),
-              showBuy: true,
+              showBuy: false,
             }}
           />
         </List.Item>
