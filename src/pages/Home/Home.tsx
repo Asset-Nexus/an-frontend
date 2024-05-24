@@ -42,7 +42,7 @@ const App = () => {
           </div>
         ))}
       </Carousel>
-      <Content style={{ padding: '1em 0 0 48px' }}>
+      <Content style={{ padding: 48 }}>
         <SectionTitle>Hottest</SectionTitle>
         <AssetList />
       </Content>
