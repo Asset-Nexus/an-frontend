@@ -187,7 +187,7 @@ function NFTUploadPage() {
       address: marketAddress,
       abi: marketAbi,
       functionName: 'listItem',
-      args: [nftAddress, BigInt(formData.tokenId), BigInt(formData.price), BigInt(formData.tokenId), BigInt(56)],
+      args: [nftAddress, BigInt(formData.tokenId), BigInt(formData.price), BigInt(56), false],
     })
   };
   const submitApprove = async () => {

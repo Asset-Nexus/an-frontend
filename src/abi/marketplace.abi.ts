@@ -412,14 +412,15 @@ export const abi = [
       },
       {
         "internalType": "uint256",
-        "name": "timestamp",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
         "name": "chainId",
         "type": "uint256"
       },
+      {
+        "internalType": "bool",
+        "name": "isCrossChain",
+        "type": "bool"
+      },
+      
     ],
     "name": "listItem",
     "outputs": [],
