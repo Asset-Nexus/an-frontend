@@ -409,7 +409,17 @@ export const abi = [
         "internalType": "uint256",
         "name": "price",
         "type": "uint256"
-      }
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
+      },
     ],
     "name": "listItem",
     "outputs": [],
