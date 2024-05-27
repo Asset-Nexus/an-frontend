@@ -20,7 +20,7 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
 
   const { connectors, connectAsync } = useConnect()
   const { address } = useAccount()
-  const { data, isPending, isSuccess, writeContractAsync } = useWriteContract()
+  const { isPending, isSuccess, writeContractAsync } = useWriteContract()
   const config = useConfig()
   const handlePayment = async () => {
     if(!address) {
@@ -35,7 +35,7 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
         functionName: 'approve',
         args: [marketAddress, parseEther(price)]
       })
-      await writeContractAsync({
+      const tx = await writeContractAsync({
         address: marketAddress,
         functionName: 'buyItem',
         abi: marketAbi,
@@ -49,7 +49,7 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
       })
       notification.success({
         message: 'success',
-        description: `Thank you for your payment. Transaction Hash: ${data}`,
+        description: `Thank you for your payment. Transaction Hash: ${tx}`,
       })
       const buyData: buyData = {
         buyerAddress: address,
