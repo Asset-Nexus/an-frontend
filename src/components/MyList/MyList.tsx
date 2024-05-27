@@ -3,7 +3,6 @@ import { formatEther } from 'viem';
 import { List } from 'antd';
 
 export default function MyList({ currentPageData }) {
-
   return (
     <List
       grid={{
@@ -21,8 +20,9 @@ export default function MyList({ currentPageData }) {
               image: item.fileUrl,
               title: item.title,
               tag: item.tag,
+              description: item.description,
               price: formatEther(item.price),
-              tokenId: Number(item.tokenId),
+              tokenId: Number(item.id),
               showBuy: true,
             }}
           />

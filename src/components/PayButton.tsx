@@ -23,7 +23,6 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
   const { data, isPending, isSuccess, writeContractAsync } = useWriteContract()
   const config = useConfig()
   const handlePayment = async () => {
-
     if(!address) {
       let connector = connectors.find((i) => i.type === "injected")
       connector = connector || connectors[0]

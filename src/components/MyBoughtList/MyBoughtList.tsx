@@ -22,7 +22,7 @@ export default function MyBoughtList({ currentPageData }) {
               description: item.description,
               tag: item.tag,
               tradeTime: item.tradeTime,
-              tokenId: Number(item.tokenId),
+              tokenId: Number(item.id),
               showBuy: false,
             }}
           />
