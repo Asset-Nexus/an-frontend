@@ -3,7 +3,7 @@ export const abi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "token",
+        "name": "tokenAddr",
         "type": "address"
       }
     ],
@@ -75,6 +75,11 @@ export const abi = [
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "MessengerNotSet",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -89,6 +94,19 @@ export const abi = [
     ],
     "name": "NotApproved",
     "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "AddWhitelist",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -166,6 +184,24 @@ export const abi = [
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
       }
     ],
     "name": "ItemListed",
@@ -202,6 +238,19 @@ export const abi = [
       {
         "indexed": true,
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "RemoveWhitelist",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "seller",
         "type": "address"
       },
@@ -228,17 +277,23 @@ export const abi = [
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "ASSET_NEXUS_TOKEN",
-    "outputs": [
+    "anonymous": false,
+    "inputs": [
       {
+        "indexed": true,
         "internalType": "address",
-        "name": "",
+        "name": "oldMessengerAddr",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newMessengerAddr",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "changeMessenger",
+    "type": "event"
   },
   {
     "inputs": [
@@ -254,6 +309,19 @@ export const abi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "assetNexusToken",
+    "outputs": [
+      {
+        "internalType": "contract AssetNexusToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -264,6 +332,21 @@ export const abi = [
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "destinationChainSelector",
+        "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isCrossChain",
+        "type": "bool"
       }
     ],
     "name": "buyItem",
@@ -337,6 +420,11 @@ export const abi = [
             "internalType": "uint256",
             "name": "timestamp",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "chainId",
+            "type": "uint256"
           }
         ],
         "internalType": "struct NFTMarketPlace.NFTSalesInformation[]",
@@ -383,6 +471,11 @@ export const abi = [
             "internalType": "uint256",
             "name": "timestamp",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "chainId",
+            "type": "uint256"
           }
         ],
         "internalType": "struct NFTMarketPlace.NFTSalesInformation[]",
@@ -419,12 +512,24 @@ export const abi = [
         "internalType": "bool",
         "name": "isCrossChain",
         "type": "bool"
-      },
-      
+      }
     ],
     "name": "listItem",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "messengerAddr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -465,6 +570,11 @@ export const abi = [
       {
         "internalType": "uint256",
         "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
         "type": "uint256"
       }
     ],
@@ -529,6 +639,11 @@ export const abi = [
         "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -568,6 +683,11 @@ export const abi = [
         "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -577,22 +697,22 @@ export const abi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "operator",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "from",
+        "name": "",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "",
         "type": "uint256"
       },
       {
         "internalType": "bytes",
-        "name": "data",
+        "name": "",
         "type": "bytes"
       }
     ],
@@ -635,6 +755,19 @@ export const abi = [
       }
     ],
     "name": "removeAddressFromWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newMessengerAddr",
+        "type": "address"
+      }
+    ],
+    "name": "setNewMessenger",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
