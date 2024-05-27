@@ -43,7 +43,7 @@ export const PayButton = ({ price, tokenId }: {price: string, tokenId: number, [
         args: [
           nftAddress,
           tokenId,
-          "9284632837123596123",
+          BigInt(9284632837123596123),
           "0xD6C1e806B29D22B862e5c8AA2a35CE2e98B82002",
           false,
         ],
