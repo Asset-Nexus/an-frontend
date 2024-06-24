@@ -1,17 +1,11 @@
 import { useEffect, useState } from 'react';
-// import { abi as marketAbi } from '../../abi/marketplace.abi';
-// import { abi as nftAbi } from '../../abi/nft.abi';
-// import { useReadContract } from 'wagmi';
-// import { readContract } from '@wagmi/core'
-// import { config } from '../../config';
 import { Pagination, Space, Typography } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import MyList from '../../components/MyList/MyList';
 import styled from '@emotion/styled';
 import { listNfts } from '../../services/market';
 
-// const nftAddress = process.env.REACT_APP_NFT_ADDRESS as `0x${string}`
-// const marketAddress = process.env.REACT_APP_MARKET_ADDRESS as `0x${string}`
+
 const pageSize = 20;
 
 const Title = styled(Typography.Title)`
@@ -24,11 +18,6 @@ text-align: center;
 `
 
 export function AssetList() {
-  // const { data } = useReadContract({
-  //   abi: marketAbi,
-  //   address: marketAddress,
-  //   functionName: 'getAllListing',
-  // });
 
   const [page, setPage] = useState(1);
   const [currentPageData, setCurrentPageData] = useState([]);
@@ -42,7 +31,7 @@ export function AssetList() {
       setData(result)
     }
     fetchList()
-    
+
   }, []);
 
   useEffect(() => {
