@@ -5,6 +5,11 @@ export const abi = [
         "internalType": "address",
         "name": "tokenAddr",
         "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "messengerAddr",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -75,11 +80,6 @@ export const abi = [
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "MessengerNotSet",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -94,19 +94,6 @@ export const abi = [
     ],
     "name": "NotApproved",
     "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "AddWhitelist",
-    "type": "event"
   },
   {
     "anonymous": false,
@@ -238,19 +225,6 @@ export const abi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "RemoveWhitelist",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
         "name": "seller",
         "type": "address"
       },
@@ -274,25 +248,6 @@ export const abi = [
       }
     ],
     "name": "UpdateItem",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "oldMessengerAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newMessengerAddr",
-        "type": "address"
-      }
-    ],
-    "name": "changeMessenger",
     "type": "event"
   },
   {
@@ -521,10 +476,10 @@ export const abi = [
   },
   {
     "inputs": [],
-    "name": "messengerAddr",
+    "name": "messenger",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "contract Messenger",
         "name": "",
         "type": "address"
       }
@@ -755,19 +710,6 @@ export const abi = [
       }
     ],
     "name": "removeAddressFromWhitelist",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newMessengerAddr",
-        "type": "address"
-      }
-    ],
-    "name": "setNewMessenger",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
